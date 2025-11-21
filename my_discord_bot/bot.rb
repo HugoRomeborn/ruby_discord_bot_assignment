@@ -1,5 +1,8 @@
 require 'discordrb'
 require 'dotenv/load'
+require_relative 'lib/hello_command'
+require_relative 'lib/ping_command'
+require_relative 'lib/info_command'
 
 # Hämta token från miljövariabel
 token = ENV['DISCORD_BOT_TOKEN']
@@ -11,18 +14,26 @@ if token.nil? || token.empty?
 end
 
 # Skapa bot med nödvändiga intents
-bot = Discordrb::Bot.new(
-  token: token,
-  intents: [:server_messages]
-)
+bot = Discordrb::Bot.new(token: token, intents: [:server_messages])
+
+hello_command = HelloCommand.new
+ping_command = PingCommand.new
+info_command = InfoCommand.new
 
 bot.message do |event|
   # Ignorera bot:ens egna meddelanden
   next if event.user.bot_account?
 
-  # Svara på !hello
-  if event.content.strip.downcase == "!hello"
-    event.respond("Hello! I'm alive! 🤖")
+  content = event.content.strip.downcase
+
+  # Kolla om meddelandet är ett kommando
+  case content
+  when "!hello"
+    hello_command.execute(event)
+  when "!ping"
+    ping_command.execute(event)
+  when "!info"
+    info_command.execute(event)
   end
 end
 
