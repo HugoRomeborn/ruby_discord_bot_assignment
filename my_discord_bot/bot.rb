@@ -3,6 +3,8 @@ require 'dotenv/load'
 require_relative 'lib/hello_command'
 require_relative 'lib/ping_command'
 require_relative 'lib/info_command'
+require_relative 'lib/dice_command'
+require_relative 'lib/echo_command'
 
 # Hämta token från miljövariabel
 token = ENV['DISCORD_BOT_TOKEN']
@@ -19,6 +21,8 @@ bot = Discordrb::Bot.new(token: token, intents: [:server_messages])
 hello_command = HelloCommand.new
 ping_command = PingCommand.new
 info_command = InfoCommand.new
+dice_command = DiceCommand.new
+echo_command = EchoCommand.new
 
 bot.message do |event|
   # Ignorera bot:ens egna meddelanden
@@ -34,6 +38,10 @@ bot.message do |event|
     ping_command.execute(event)
   when "!info"
     info_command.execute(event)
+  when "!dice"
+    dice_command.execute(event)
+  when content.include?("!echo")
+    echo_command.execute(event)
   end
 end
 

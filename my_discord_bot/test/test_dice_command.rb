@@ -1,22 +1,27 @@
 require_relative 'spec_helper'
-require_relative '../lib/hello_command'
+require_relative '../lib/dice_command'
 
-class TestHelloCommand < Minitest::Test
+class TestDiceCommand < Minitest::Test
   def test_dice_command_has_name_and_description
-    command = HelloCommand.new
+    command = DiceCommand.new
 
-    assert_equal "hello", command.name
-    assert_equal "Säger hej!", command.description
+    assert_equal "dice", command.name
+    assert_equal "Slår en tärning", command.description
   end
 
-  def test_hello_command_responds_with_greeting
-    command = HelloCommand.new
-    mock_event = MockEvent.new(content: "!hello")
+  def test_dice_returns_number_between_1_and_6
+    command = DiceCommand.new
 
-    command.execute(mock_event)
+    # Kör 100 gånger för att verifiera range
+    100.times do
+      mock_event = MockEvent.new(content: "!dice")
+      command.execute(mock_event)
 
-    # Kontrollera att bot:en svarade
-    assert_equal 1, mock_event.responses.length
-    assert_equal "Hello!", mock_event.responses.first
+      # Extrahera nummer från svaret (t.ex. "Du rullade: 4")
+      response = mock_event.responses.first
+      number = response.match(/\d+/)[0].to_i
+
+      assert_includes 1..6, number
+    end
   end
 end
