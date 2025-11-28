@@ -40,7 +40,7 @@ bot.message do |event|
     info_command.execute(event)
   when "!dice"
     dice_command.execute(event)
-  when content.include?("!echo")
+  when ("!echo")
     echo_command.execute(event)
   end
 end
