@@ -24,4 +24,10 @@ class TestDiceCommand < Minitest::Test
       assert_includes 1..6, number
     end
   end
+
+  def test_dice_command_is_a_command
+    command = DiceCommand.new
+    assert_instance_of DiceCommand, command
+    assert_kind_of Command, command
+  end
 end

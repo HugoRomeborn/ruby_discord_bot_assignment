@@ -23,3 +23,5 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 # Ladda test-hjälpare (mocks)
 require_relative 'mock_event'
+require_relative '../lib/command'
+

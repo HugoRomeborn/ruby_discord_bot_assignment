@@ -1,8 +1,6 @@
-class EchoCommand
-  attr_reader :name, :description
+class EchoCommand < Command
   def initialize
-    @name = "echo"
-    @description = "Ger ett eko av användarens meddelande"
+    super(name: "echo", description: "Ger ett eko av användarens meddelande")
   end
 
   def execute(event)

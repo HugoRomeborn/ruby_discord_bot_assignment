@@ -1,10 +1,10 @@
 require 'discordrb'
 require 'dotenv/load'
-require_relative 'lib/hello_command'
-require_relative 'lib/ping_command'
-require_relative 'lib/info_command'
+require_relative 'lib/command'
 require_relative 'lib/dice_command'
 require_relative 'lib/echo_command'
+require_relative 'lib/text_command'
+
 
 # Hämta token från miljövariabel
 token = ENV['DISCORD_BOT_TOKEN']
@@ -18,9 +18,9 @@ end
 # Skapa bot med nödvändiga intents
 bot = Discordrb::Bot.new(token: token, intents: [:server_messages])
 
-hello_command = HelloCommand.new
-ping_command = PingCommand.new
-info_command = InfoCommand.new
+hello_command = TextCommand.new(name: "hello", description: "Säger hej!", text: "Hello!")
+ping_command = TextCommand.new(name: "ping", description: "Svarar med pong", text: "Pong!")
+info_command = TextCommand.new(name: "info", description: "Informerar om bot", text: "Jag är en bot som hjälper denna server att fungera.")
 dice_command = DiceCommand.new
 echo_command = EchoCommand.new
 
@@ -28,11 +28,12 @@ bot.message do |event|
   # Ignorera bot:ens egna meddelanden
   next if event.user.bot_account?
 
-  content = event.content.strip.downcase
+  content = event.content.strip.downcase.split
 
   # Kolla om meddelandet är ett kommando
-  case content
+  case content[0]
   when "!hello"
+    
     hello_command.execute(event)
   when "!ping"
     ping_command.execute(event)
@@ -40,7 +41,7 @@ bot.message do |event|
     info_command.execute(event)
   when "!dice"
     dice_command.execute(event)
-  when ("!echo")
+  when "!echo"
     echo_command.execute(event)
   end
 end

@@ -6,6 +6,6 @@ class Command
   end
 
   def execute(event:)
-    nil
+    raise NotImplementedError, "Subclass must implement execute method"
   end
 end

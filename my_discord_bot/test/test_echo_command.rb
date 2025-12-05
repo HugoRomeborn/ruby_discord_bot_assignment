@@ -22,4 +22,10 @@ class TestEchoCommand < Minitest::Test
       assert_includes correct, mock_event.responses.first
     end
   end
+
+  def test_echo_command_is_a_command
+    command = EchoCommand.new
+    assert_instance_of EchoCommand, command
+    assert_kind_of Command, command
+  end
 end

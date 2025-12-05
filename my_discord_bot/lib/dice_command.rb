@@ -1,8 +1,6 @@
-class DiceCommand
-  attr_reader :name, :description
+class DiceCommand < Command
   def initialize
-    @name = "dice"
-    @description  = "Slår en tärning"
+    super(name: "dice", description: "Slår en tärning")
   end
 
   def execute(event)
